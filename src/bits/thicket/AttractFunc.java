@@ -1,16 +1,18 @@
 package bits.thicket;
 
-import cogmac.math3d.Tol;
-
 /**
  * @author decamp
  */
 interface AttractFunc {
+
     
     void init( LayoutParams params, Graph graph );
     
     void apply( Edge e );
 
+    
+    
+    static final float EPS = 0x0.000002P-60f;
     
 
     static final class Log2 implements AttractFunc { 
@@ -26,7 +28,7 @@ interface AttractFunc {
             float dx  = a.mX - b.mX;
             float dy  = a.mY - b.mY;
             double dd = Math.sqrt( dx * dx + dy * dy );
-            float mag = (float)( e.mWeight * mCoeff * Math.log( 1.0 + dd ) / ( dd + Tol.FSQRT_ABS_ERR ) );
+            float mag = (float)( e.mWeight * mCoeff * Math.log( 1.0 + dd ) / ( dd + EPS ) );
             
             a.mForceX -= mag * dx;
             a.mForceY -= mag * dy;
@@ -50,7 +52,7 @@ interface AttractFunc {
             float dy  = a.mY - b.mY;
             float dz  = a.mZ - b.mZ;
             double dd = Math.sqrt( dx * dx + dy * dy + dz * dz );
-            float mag = (float)( e.mWeight * mCoeff * Math.log( 1.0 + dd ) / ( dd + Tol.FSQRT_ABS_ERR ) ); 
+            float mag = (float)( e.mWeight * mCoeff * Math.log( 1.0 + dd ) / ( dd + EPS ) ); 
             
             a.mForceX -= mag * dx;
             a.mForceY -= mag * dy;

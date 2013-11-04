@@ -1,5 +1,6 @@
 package bits.thicket;
 
+import java.awt.BorderLayout;
 import java.io.File;
 import java.util.Random;
 
@@ -9,7 +10,6 @@ import javax.swing.JFrame;
 import static javax.media.opengl.GL.*;
 
 import cogmac.glui.*;
-import cogmac.gui.layout.FillLayout;
 import bits.prototype.*;
 
 
@@ -17,6 +17,7 @@ import bits.prototype.*;
  * @author decamp
  */
 public class MainTest {
+    
     
     public static void main( String[] args ) throws Exception {
         testRender();
@@ -76,7 +77,7 @@ public class MainTest {
     
     static void testRender() throws Exception {
         final float lineAlpha = 1f;
-        int dim = 2;
+        int dim = 3;
         int imSize = 1300;
         
         LayoutParams params         = new LayoutParams();
@@ -132,8 +133,7 @@ public class MainTest {
         });
 
         JFrame frame = new JFrame( "Graph Layout" );
-        frame.setLayout( new FillLayout() );
-        frame.add( cont.component() );
+        frame.add( cont.component(), BorderLayout.CENTER );
         frame.setSize( imSize, imSize + 22 );
         frame.setLocationRelativeTo( null );
         frame.setVisible( true );
@@ -158,7 +158,7 @@ public class MainTest {
         //File file = new File( "resources_test/us_powergrid_n4941.col" );
         //File file = new File( "resources_test/oclinks_w.col" );
         //Graph graph = ColParser.parse( new File( "resources_test/celegans_n306.col" ), params.mDim );
-        Graph graph = new Graph( WattsStrogatzGenerator.generate( params.mRand, params.mDim, 5000, 30, 0.001 ) );
+        Graph graph = WattsStrogatzGenerator.generate( params.mRand, params.mDim, 5000, 30, 0.001 );
         
         System.out.println( "Verts: " + graph.mVertNo + "    Edges: " + graph.mEdgeNo );
         System.out.println( "Q_start: " + Graphs.computeScaledAtedgeLength( graph.mVerts ) * 1000.0 );
@@ -235,7 +235,7 @@ public class MainTest {
         //File file = new File( "resources_test/oclinks_w.col" );
         //Graph graph = ColParser.parse( new File( "resources_test/celegans_n306.col" ), params.mDim );
         //Graph graph = new Graph( WattsStrogatzGenerator.generate( params.mRand, params.mDim, 3000, 30, 0.001 ) );
-        Graph graph = new Graph( WattsStrogatzGenerator.generate( params.mRand, params.mDim, 3000, 30, 0.001 ) );
+        Graph graph = WattsStrogatzGenerator.generate( params.mRand, params.mDim, 3000, 30, 0.001 );
         
         long total = 0;
         int trials = 3;

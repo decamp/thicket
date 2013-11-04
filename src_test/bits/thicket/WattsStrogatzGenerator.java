@@ -1,8 +1,6 @@
 package bits.thicket;
 
-import java.util.Random;
-
-import cogmac.data.PublicList;
+import java.util.*;
 
 
 /**
@@ -10,12 +8,12 @@ import cogmac.data.PublicList;
  */
 public class WattsStrogatzGenerator {
     
-    public static PublicList<Vert> generate( Random rand, int dim, int vertNo, int edgesPerVert, double fractionRandEdges ) {
+    public static Graph generate( Random rand, int dim, int vertNo, int edgesPerVert, double fractionRandEdges ) {
         if( rand == null ) {
             rand = new Random();
         }
         
-        PublicList<Vert> verts = PublicList.newInstance( Vert.class, vertNo );
+        List<Vert> verts = new ArrayList<Vert>( vertNo );
         
         // Creating a regular ring lattice
         for (int i = 0; i < vertNo; i++ ) {
@@ -49,7 +47,7 @@ public class WattsStrogatzGenerator {
             }
         }
         
-        return verts;
+        return new Graph( verts );
     }
 
 }

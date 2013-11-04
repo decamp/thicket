@@ -1,12 +1,13 @@
 package bits.thicket;
 
-import cogmac.math3d.Tol;
-
 
 /**
  * @author decamp
  */
 class GravityPhase implements SolverPhase {
+
+    private static final float EPS = 0x0.000002P-60f;
+    
     
     private float mX;
     private float mY;
@@ -81,7 +82,7 @@ class GravityPhase implements SolverPhase {
                 
                 float dx = gx - verts.mX;
                 float dy = gy - verts.mY;
-                float scale = gf * verts.mWeight / ( (float)Math.sqrt( dx * dx + dy * dy ) + Tol.FSQRT_ABS_ERR );
+                float scale = gf * verts.mWeight / ( (float)Math.sqrt( dx * dx + dy * dy ) + EPS );
                 
                 verts.mForceX = scale * dx;
                 verts.mForceY = scale * dy;
@@ -160,7 +161,7 @@ class GravityPhase implements SolverPhase {
                 float dx = gx - verts.mX;
                 float dy = gy - verts.mY;
                 float dz = gz - verts.mZ;
-                float scale = gf * verts.mWeight / ( (float)Math.sqrt( dx * dx + dy * dy + dz * dz ) + Tol.FSQRT_ABS_ERR );
+                float scale = gf * verts.mWeight / ( (float)Math.sqrt( dx * dx + dy * dy + dz * dz ) + EPS );
                 
                 verts.mForceX = scale * dx;
                 verts.mForceY = scale * dy;

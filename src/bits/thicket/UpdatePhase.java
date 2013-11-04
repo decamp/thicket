@@ -1,12 +1,12 @@
 package bits.thicket;
 
-import cogmac.math3d.Tol;
-
 
 /**
  * @author decamp
  */
 class UpdatePhase implements SolverPhase {
+
+    private static final float EPS = 0x0.000002P-60f;
     
     private float mStepStart  = 0.5f;   // 0.5f
     private float mStepUpdate = 0.9f;   // 0.9f
@@ -92,7 +92,7 @@ class UpdatePhase implements SolverPhase {
         public float update( Vert v, float stepLength ) {
             float fx = v.mForceX;
             float fy = v.mForceY;
-            float energy = fx * fx + fy * fy + Tol.FSQRT_ABS_ERR;
+            float energy = fx * fx + fy * fy + EPS;
             float scale  = stepLength / (float)Math.sqrt( energy );
             v.mX += scale * fx;
             v.mY += scale * fy;
@@ -107,7 +107,7 @@ class UpdatePhase implements SolverPhase {
             float fx = v.mForceX;
             float fy = v.mForceY;
             float fz = v.mForceZ;
-            float energy = fx * fx + fy * fy + fz * fz + Tol.FSQRT_ABS_ERR;
+            float energy = fx * fx + fy * fy + fz * fz + EPS;
             float scale  = stepLength / (float)Math.sqrt( energy );
             v.mX += scale * fx;
             v.mY += scale * fy;
