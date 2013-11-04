@@ -1,0 +1,108 @@
+package bits.thicket;
+
+import java.util.Collection;
+
+
+/**
+ * @author decamp
+ */
+public class Graph {
+    
+    /**
+     * Vertices for this graph. Verts are connected by 'mGraphNext' field as singly-linked list.
+     */
+    public Vert mVerts;
+    
+    /**
+     * Number of vertices in graph.
+     */
+    public int mVertNo;
+    
+    /**
+     * Edges for this graph. Edges are connected by 'mGraphNext' field as singly-linked list.
+     */
+    public Edge mEdges;
+    
+    /**
+     * Number of edges in graph.
+     */
+    public int mEdgeNo;
+    
+    /**
+     * Number of times this graph has been coarsened.
+     */
+    public int mCoarseLevel;
+    
+    /**
+     * Link to the next finer level of this graph, or <code>null</code> if <code>mDetailLevel == 0</code>.
+     */
+    public Graph mFinerGraph;
+    
+    
+    
+    public Graph() {}
+    
+    
+    public Graph( Vert vertList ) {
+        install( vertList );
+    }
+ 
+    
+    public Graph( Collection<Vert> verts ) {
+        install( verts );
+    }
+    
+    
+    
+    
+    void install( Vert verts ) {
+        mVerts       = verts;
+        mVertNo      = 0;
+        mEdges       = null;
+        mEdgeNo      = 0;
+        mCoarseLevel = 0;
+        mFinerGraph  = null;
+        
+        for( Vert v = verts; v != null; v = v.mGraphNext ) {
+            mVertNo++;
+            
+            for( Edge e = v.mEdges; e != null; e = e.next( v ) ) {
+                addEdge( e );
+            }
+        }
+    }
+    
+    
+    void install( Collection<Vert> verts ) {
+        mVertNo      = 0;
+        mEdges       = null;
+        mEdgeNo      = 0;
+        mCoarseLevel = 0;
+        mFinerGraph  = null;
+        
+        for( Vert v: verts ) {
+            addVert( v );
+            for( Edge e = v.mEdges; e != null; e = e.next( v ) ) {
+                if( e.mA == v ) {
+                    addEdge( e );
+                }
+            }
+        }
+    }
+    
+    
+    void addEdge( Edge e ) {
+        e.mGraphNext = mEdges;
+        mEdges = e;
+        mEdgeNo++;
+    }
+    
+    
+    void addVert( Vert v ) {
+        v.mGraphNext = mVerts;
+        mVerts = v;
+        mVertNo++;
+    }
+    
+
+}
