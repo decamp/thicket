@@ -1,11 +1,12 @@
 package bits.thicket;
 
 import javax.media.opengl.GL;
+
+import bits.glui.*;
+import bits.glui.event.*;
+import bits.math3d.*;
 import static javax.media.opengl.GL.*;
 
-import cogmac.glui.*;
-import cogmac.glui.event.*;
-import cogmac.math3d.*;
 
 
 /**

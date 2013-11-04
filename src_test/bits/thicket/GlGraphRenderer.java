@@ -2,10 +2,11 @@ package bits.thicket;
 
 import java.nio.*;
 import javax.media.opengl.GL;
+
+import bits.draw3d.nodes.*;
+import bits.glui.*;
 import static javax.media.opengl.GL.*;
 
-import cogmac.draw3d.nodes.*;
-import cogmac.glui.*;
 
 
 /**

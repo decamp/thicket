@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 
 import static javax.media.opengl.GL.*;
 
-import cogmac.glui.*;
+import bits.glui.*;
 import bits.prototype.*;
 
 

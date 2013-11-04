@@ -1,6 +1,6 @@
 <project name="thicket" default="dist" basedir=".">
 	<description>
-		Builds something.
+		Graph layout library.
 	</description>
 
 	<!-- set global properties for this build -->
