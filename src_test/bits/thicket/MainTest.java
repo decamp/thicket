@@ -91,7 +91,7 @@ public class MainTest {
         params.mRepulseEq           = RepulseEq.INV_SQUARE_DIST;
         params.mRepulseApprox       = true;
         
-        params.mUpdateTol           = 0.005f;
+        params.mUpdateTol           = 0.004f;
         params.mUpdateCoarseTol     = 0.075f;
         params.mUpdateInitialStep   = 0.4f;
         params.mUpdateIncrementStep = 0.85f;
@@ -105,7 +105,7 @@ public class MainTest {
         //Graph graph = ColParser.parse( new File( "resources_test/celegans_n306.col" ), dim );
         //Graph graph = ColParser.parse( new File( "resources_test/dsjr500.5.col" ), dim );
         Graph graph = GraphFileParser.parse( new File( "resources_test/4elt.graph" ) );
-        //Graph graph = new Graph( WattsStrogatzGenerator.generate( params.mRand, dim, 5000, 25, 0.001 ) );
+        //Graph graph = WattsStrogatzGenerator.generate( params.mRand, dim, 10000, 20, 0.002 );
         //Graph graph = new Graph( WattsStrogatzGenerator.generate( null, dim, 200, 15, 0.05 ) );
         
         Graphs.assertValid( graph );

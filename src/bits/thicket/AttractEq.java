@@ -9,7 +9,7 @@ public enum AttractEq {
     SQUARE_DIST;
 
 
-    static AttractFunc newFunc( AttractEq eq, int dim ) {
+    public static AttractFunc newFunc( AttractEq eq, int dim ) {
         switch( eq ) {
         case LOG_DIST:
             switch( dim ) {

@@ -3,7 +3,7 @@ package bits.thicket;
 /**
  * @author decamp
  */
-interface AttractFunc {
+public interface AttractFunc {
 
     
     void init( LayoutParams params, Graph graph );

@@ -9,9 +9,9 @@ public class Edge {
     public final Vert mB;
     public float mWeight;
     
-    Edge mANext = null;
-    Edge mBNext = null;
-    Edge mGraphNext = null;
+    public Edge mANext     = null;
+    public Edge mBNext     = null;
+    public Edge mGraphNext = null;
     
     
     public Edge( Vert a, Vert b, float weight ) {

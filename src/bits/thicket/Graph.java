@@ -52,6 +52,23 @@ public class Graph {
         install( verts );
     }
     
+
+    
+    
+    public void addEdge( Edge e ) {
+        e.mGraphNext = mEdges;
+        mEdges = e;
+        mEdgeNo++;
+    }
+    
+    
+    public void addVert( Vert v ) {
+        v.mGraphNext = mVerts;
+        mVerts = v;
+        mVertNo++;
+    }
+    
+
     
     
     
@@ -88,20 +105,6 @@ public class Graph {
                 }
             }
         }
-    }
-    
-    
-    void addEdge( Edge e ) {
-        e.mGraphNext = mEdges;
-        mEdges = e;
-        mEdgeNo++;
-    }
-    
-    
-    void addVert( Vert v ) {
-        v.mGraphNext = mVerts;
-        mVerts = v;
-        mVertNo++;
     }
     
 
