@@ -20,7 +20,8 @@ public class MainTest {
     
     
     public static void main( String[] args ) throws Exception {
-        testRender();
+        //testRender();
+        testLocalAdaptive();
     }
     
     
@@ -260,4 +261,73 @@ public class MainTest {
         System.out.println( "Ave: " + ( total / 1000000000.0 / trials ) );
     }
 
+    
+    static void testLocalAdaptive() throws Exception {
+        final float lineAlpha = 1f;
+        int dim = 3;
+        int imSize = 1300;
+        
+        LayoutParams params         = new LayoutParams();
+        params.mDim                 = dim;
+        params.mRand                = new Random( 1 );
+        params.mMultilevel          = false;
+        params.mVertWeightModel     = VertWeightModel.PREDEFINED;
+        
+        params.mGravityForce        = 0.1f;
+        params.mAttractEq           = AttractEq.SQUARE_DIST;
+        params.mRepulseEq           = RepulseEq.INV_SQUARE_DIST;
+        params.mRepulseApprox       = true;
+        
+        params.mUpdatePhase         = new LocalAdaptiveUpdatePhase();
+        params.mUpdateTol           = 0.004f;
+        params.mUpdateCoarseTol     = 0.075f;
+        params.mUpdateInitialStep   = 0.4f;
+        params.mUpdateIncrementStep = 0.85f;
+        
+        float[] bounds = { -10f, -10f, -10f, 10f, 10f, 10f };
+        
+        //Graph graph = ColParser.parse( new File( "resources_test/aframe.col" ), dim );
+        //Graph graph = ColParser.parse( new File( "resources_test/ball.col" ), dim );
+        //Graph graph = ColParser.parse( new File( "resources_test/us_powergrid_n4941.col" ), dim );
+        //Graph graph = ColParser.parse( new File( "resources_test/oclinks_w.col" ), dim );
+        //Graph graph = ColParser.parse( new File( "resources_test/celegans_n306.col" ), dim );
+        //Graph graph = ColParser.parse( new File( "resources_test/dsjr500.5.col" ), dim );
+        Graph graph = GraphFileParser.parse( new File( "resources_test/4elt.graph" ) );
+        //Graph graph = WattsStrogatzGenerator.generate( params.mRand, dim, 10000, 20, 0.002 );
+        //Graph graph = new Graph( WattsStrogatzGenerator.generate( null, dim, 200, 15, 0.05 ) );
+        
+        Graphs.assertValid( graph );
+        Graphs.randomizePositions3( graph.mVerts, bounds, params.mRand );
+        
+        GLCapabilities caps = new GLCapabilities();
+        caps.setNumSamples( 1 );
+        caps.setSampleBuffers( false );
+        caps.setDepthBits( 16 );
+        caps.setDoubleBuffered( true );
+        
+        final GRootController cont = GRootController.newInstance( caps, null );
+        cont.setClearColor( 0.15f, 0.15f, 0.15f, 1f );
+        cont.setClearBits( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        cont.rootPane().addChild( new GraphPanel( params, graph, lineAlpha ) );
+        cont.rootPane().setLayout( new GLayout() {
+            @Override
+            public void layoutPane( GComponent pane ) {
+                int w = pane.width();
+                int h = pane.height();
+                for( GComponent c: pane.children() ) {
+                    c.bounds( 0, 0, w, h );
+                }
+            }
+        });
+
+        JFrame frame = new JFrame( "Graph Layout" );
+        frame.add( cont.component(), BorderLayout.CENTER );
+        frame.setSize( imSize, imSize + 22 );
+        frame.setLocationRelativeTo( null );
+        frame.setVisible( true );
+        
+        cont.startAnimator( 30.0 );
+    }
+
+    
 }

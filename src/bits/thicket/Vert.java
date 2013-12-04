@@ -21,6 +21,10 @@ public class Vert {
     public Vert mTempNext;
     public float mTempDist;
     
+    public float mPrevForceX;
+    public float mPrevForceY;
+    public float mPrevForceZ;
+    
     
     public Vert() {}
   

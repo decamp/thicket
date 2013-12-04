@@ -112,6 +112,13 @@ public class LayoutParams {
      **************************************************************************/
 
     /**
+     * This field can be set to override the entire update phase of the solver.
+     * If <code>null</code>, the solver will determine an implementation based
+     * on the repulse parameters below. 
+     */
+    public UpdatePhase mUpdatePhase = null;
+    
+    /**
      * The step length used at the start of a layout. This value is expressed in 
      * proportion to <code>mScale</code>.
      */

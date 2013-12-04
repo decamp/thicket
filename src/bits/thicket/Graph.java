@@ -68,7 +68,25 @@ public class Graph {
         mVertNo++;
     }
     
-
+    /**
+     * Creates edge to connect two vertices, adds that edge
+     * to both vertices, and adds the edge to the graph.
+     * NOTE: Both vertices MUST already be members of the graph.
+     * Connecting a Vert to itself causes undefined behavior.
+     * 
+     * @param a      Some Vert in the graph.
+     * @param b      Some Vert in the graph. 
+     * @param weight Weight of edge.
+     */
+    public Edge connect( Vert a, Vert b, float weight ) {
+        Edge e = new Edge( a, b, weight );
+        addEdge( e );
+        a.addEdge( e );
+        b.addEdge( e );
+        return e;
+    }
+    
+    
     
     
     

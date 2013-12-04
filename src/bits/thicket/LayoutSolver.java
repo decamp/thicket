@@ -22,7 +22,7 @@ public class LayoutSolver {
     private GravityPhase mGravityPhase = new GravityPhase();
     private SolverPhase  mAttractPhase;
     private SolverPhase  mRepulsePhase;
-    private UpdatePhase  mUpdatePhase  = new UpdatePhase();
+    private UpdatePhase  mUpdatePhase;
     
     private final float[] mWork = new float[6];
         
@@ -34,6 +34,8 @@ public class LayoutSolver {
         
         mAttractPhase = getAttractPhase( params );
         mRepulsePhase = getRepulsePhase( params );
+        mUpdatePhase  = getUpdatePhase(  params );
+        
         
         mParams     = params;
         mGraph      = graph;
@@ -173,4 +175,13 @@ public class LayoutSolver {
         return new RepulsePhaseBruteForce();
     }
 
+    
+    private static UpdatePhase getUpdatePhase( LayoutParams params ) {
+        if( params.mUpdatePhase != null ) {
+            return params.mUpdatePhase;
+        }
+        
+        return new BasicUpdatePhase();
+    }
+    
 }
