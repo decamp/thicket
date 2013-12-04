@@ -4,7 +4,7 @@ package bits.thicket;
 /**
  * @author decamp
  */
-class BasicUpdatePhase implements UpdatePhase {
+public class GlobalStepUpdatePhase implements UpdatePhase {
 
     private static final float EPS = 0x0.000002P-60f;
     
@@ -20,7 +20,7 @@ class BasicUpdatePhase implements UpdatePhase {
     private boolean mConverged = false;
     
     
-    BasicUpdatePhase() {}
+    public GlobalStepUpdatePhase() {}
     
     
     

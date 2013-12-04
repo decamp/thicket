@@ -181,7 +181,7 @@ public class LayoutSolver {
             return params.mUpdatePhase;
         }
         
-        return new BasicUpdatePhase();
+        return new GlobalStepUpdatePhase();
     }
     
 }

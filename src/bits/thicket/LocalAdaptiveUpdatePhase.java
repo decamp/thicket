@@ -11,9 +11,9 @@ public class LocalAdaptiveUpdatePhase implements UpdatePhase {
 
     private static final float EPS = 0x0.000002P-60f;
 
-    private static final float LOCAL_SPEED_FACTOR = 0.2f;
-    private static final float LOCAL_SPEED_MAX    = 20f;
-    private static final float GLOBAL_SPEED_TOL   = 10f;
+    private static final float LOCAL_SPEED_FACTOR = 0.5f;
+    private static final float LOCAL_SPEED_MAX    = Float.POSITIVE_INFINITY;
+    private static final float GLOBAL_SPEED_TOL   = 1f;
     
     //private float mStepStart  = 0.5f;   // 0.5f
     //private float mStepUpdate = 0.9f;   // 0.9f
@@ -27,7 +27,7 @@ public class LocalAdaptiveUpdatePhase implements UpdatePhase {
     private boolean mConverged = false;
     
     
-    LocalAdaptiveUpdatePhase() {}
+    public LocalAdaptiveUpdatePhase() {}
     
     
     
@@ -90,6 +90,8 @@ public class LocalAdaptiveUpdatePhase implements UpdatePhase {
         
         mSpeedGlobal = newSpeedGlobal;
         mConverged  = mSpeedGlobal < mSpeedStop;
+        
+        //System.out.println( mSpeedGlobal );
     }
     
     
