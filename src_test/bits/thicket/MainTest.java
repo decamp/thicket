@@ -20,8 +20,8 @@ public class MainTest {
     
     
     public static void main( String[] args ) throws Exception {
-        //testRender();
-        testLocalAdaptive();
+        testRender();
+        //testLocalAdaptive();
     }
     
     
