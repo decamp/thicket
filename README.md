@@ -4,7 +4,7 @@ with direct access to intermediate results, so the library is suitable interacti
 processes. Thicket is aggressively optimized by Java standards. On my machine, it takes about 10 seconds to layout the "4lt.graph"
 graph of 15,606 vertices and 45,878 edges, with good results.
 
-* Features *
+*Features*
 
 - Barnes-Hut optimization. Uses quad/oct trees to compute repulsive forces. Tree construction is dynamically tuned.
 
@@ -21,7 +21,7 @@ Relevant documentation on this implementation and various algorithms used have b
 Although there is a bunch of code and libraries in src/test, this project is primarily focused
 on the underlying layout engine and not on visualization. 
 
-* Non-Features *
+*Non-Features*
 
 - Documentation is not great.
 
