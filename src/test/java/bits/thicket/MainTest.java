@@ -32,7 +32,7 @@ public class MainTest {
     
     
     static void testCoarsen() throws Exception {
-        final int DIM = 2;
+        final int DIM = 3;
         final int MAX_LEVEL = 3;
         
         LayoutParams params = new LayoutParams();
@@ -40,10 +40,10 @@ public class MainTest {
         params.mRand   = new Random( 0 );
         params.mRefine = RefineFunc.NOTHING;
         
-        //Graph graph = ColParser.parse( new File( "resources_test/aframe.col" ), DIM );
-        Graph graph = ColParser.parse( new File( "resources_test/ball.col" ), DIM );
-        //Graph graph = ColParser.parse( new File( "resources_test/latin_square.col" ), DIM );
-        //Graph graph = ColParser.parse( new File( "resources_test/celegans_n306.col" ), DIM );
+        //Graph graph = ColParser.parse( new File( "../test/resources/aframe.col" ), DIM );
+        Graph graph = ColParser.parse( new File( "../test/resources/ball.col" ), DIM );
+        //Graph graph = ColParser.parse( new File( "../test/resources/latin_square.col" ), DIM );
+        //Graph graph = ColParser.parse( new File( "../test/resources/celegans_n306.col" ), DIM );
         //Graph graph = new Graph( WattsStrogatzGenerator.generate( null, 2, 50, 6, 0.06 ) );
         
         int imSize = 1300;
@@ -105,13 +105,13 @@ public class MainTest {
         
         float[] bounds = { -10f, -10f, -10f, 10f, 10f, 10f };
         
-//        Graph graph = ColParser.parse( new File( "src/test/resources/aframe.col" ), dim );
-        Graph graph = ColParser.parse( new File( "src/test/resources/ball.col" ), dim );
-//        Graph graph = ColParser.parse( new File( "src/test/resources/us_powergrid_n4941.col" ), dim );
-//        Graph graph = ColParser.parse( new File( "src/test/resources/oclinks_w.col" ), dim );
-//        Graph graph = ColParser.parse( new File( "src/test/resources/celegans_n306.col" ), dim );
-//        Graph graph = ColParser.parse( new File( "src/test/resources/dsjr500.5.col" ), dim );
-//        Graph graph = GraphFileParser.parse( new File( "resources_test/4elt.graph" ) );
+//        Graph graph = ColParser.parse( new File( "../test/resources/aframe.col" ), dim );
+//        Graph graph = ColParser.parse( new File( "../test/resources/ball.col" ), dim );
+//        Graph graph = ColParser.parse( new File( "../test/resources/us_powergrid_n4941.col" ), dim );
+//        Graph graph = ColParser.parse( new File( "../test/resources/oclinks_w.col" ), dim );
+//        Graph graph = ColParser.parse( new File( "../test/resources/celegans_n306.col" ), dim );
+//        Graph graph = ColParser.parse( new File( "../test/resources/dsjr500.5.col" ), dim );
+        Graph graph = GraphFileParser.parse( new File( "../test/resources/4elt.graph" ) );
 //        Graph graph = WattsStrogatzGenerator.generate( params.mRand, dim, 10000, 20, 0.002 );
 //        Graph graph = new Graph( WattsStrogatzGenerator.generate( null, dim, 200, 15, 0.05 ) );
 
@@ -294,13 +294,13 @@ public class MainTest {
         
         float[] bounds = { -10f, -10f, -10f, 10f, 10f, 10f };
         
-        //Graph graph = ColParser.parse( new File( "resources_test/aframe.col" ), dim );
-        //Graph graph = ColParser.parse( new File( "resources_test/ball.col" ), dim );
-        //Graph graph = ColParser.parse( new File( "resources_test/us_powergrid_n4941.col" ), dim );
-        //Graph graph = ColParser.parse( new File( "resources_test/oclinks_w.col" ), dim );
-        //Graph graph = ColParser.parse( new File( "resources_test/celegans_n306.col" ), dim );
-        //Graph graph = ColParser.parse( new File( "resources_test/dsjr500.5.col" ), dim );
-        Graph graph = GraphFileParser.parse( new File( "resources_test/4elt.graph" ) );
+        //Graph graph = ColParser.parse( new File( "../test/resources/aframe.col" ), dim );
+        //Graph graph = ColParser.parse( new File( "../test/resources/ball.col" ), dim );
+        //Graph graph = ColParser.parse( new File( "../test/resources/us_powergrid_n4941.col" ), dim );
+        //Graph graph = ColParser.parse( new File( "../test/resources/oclinks_w.col" ), dim );
+        //Graph graph = ColParser.parse( new File( "../test/resources/celegans_n306.col" ), dim );
+        //Graph graph = ColParser.parse( new File( "../test/resources/dsjr500.5.col" ), dim );
+        Graph graph = GraphFileParser.parse( new File( "../test/resources/4elt.graph" ) );
         //Graph graph = WattsStrogatzGenerator.generate( params.mRand, dim, 10000, 20, 0.002 );
         //Graph graph = new Graph( WattsStrogatzGenerator.generate( null, dim, 200, 15, 0.05 ) );
         

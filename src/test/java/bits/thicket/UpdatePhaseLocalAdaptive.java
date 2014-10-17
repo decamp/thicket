@@ -1,6 +1,6 @@
 //package bits.thicket;
 //
-//import cogmac.math3d.Tol;
+//import bits.math3d.Tol;
 //
 ///**
 // * Same scheme as used in ForceAtlas2. Quality is good, but 

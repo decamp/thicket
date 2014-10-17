@@ -9,7 +9,7 @@ package bits.thicket;
 
 /**
  * More similar to the ForceAtlas2 update phase in which the speed of each node 
- * is determined seperately. 
+ * is determined separately.
  * 
  * @author decamp
  */
