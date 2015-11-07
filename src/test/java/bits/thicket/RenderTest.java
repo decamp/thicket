@@ -10,19 +10,19 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.util.Random;
 
-import javax.media.opengl.*;
+import bits.util.gui.ImagePanel;
+import com.jogamp.opengl.*;
 import javax.swing.JFrame;
 
-import static javax.media.opengl.GL.*;
+import static com.jogamp.opengl.GL.*;
 
 import bits.glui.*;
-import bits.prototype.*;
 
 
 /**
  * @author decamp
  */
-public class MainTest {
+public class RenderTest {
     
     
     public static void main( String[] args ) throws Exception {
@@ -119,14 +119,15 @@ public class MainTest {
 
         Graphs.assertValid( graph );
         Graphs.randomizePositions3( graph.mVerts, bounds, params.mRand );
-        
-        GLCapabilities caps = new GLCapabilities();
+
+        GLProfile profile = GLProfile.get( GLProfile.GL3 );
+        GLCapabilities caps = new GLCapabilities( profile );
         caps.setNumSamples( 1 );
         caps.setSampleBuffers( false );
         caps.setDepthBits( 16 );
         caps.setDoubleBuffered( true );
         
-        final GRootController cont = GRootController.newInstance( caps, null );
+        final GRootController cont = GRootController.create( caps );
         cont.setClearColor( 0.15f, 0.15f, 0.15f, 1f );
         cont.setClearBits( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
         cont.rootPane().addChild( new GraphPanel( params, graph, lineAlpha ) );
@@ -136,7 +137,7 @@ public class MainTest {
                 int w = pane.width();
                 int h = pane.height();
                 for( GComponent c: pane.children() ) {
-                    c.bounds( 0, 0, w, h );
+                    c.setBounds( 0, 0, w, h );
                 }
             }
         });
@@ -254,13 +255,13 @@ public class MainTest {
             
             LayoutSolver solver = new LayoutSolver();
             solver.init( params, graph );
-            
-            Timer.start();
+
+            long startNanos = System.nanoTime();
             while( !solver.converged() ) {
                 solver.step();
             }
             
-            long dur = Timer.nanos();
+            long dur = System.nanoTime() - startNanos;
             double qual = Graphs.computeScaledAtEdgeLength( graph.mVerts );
             System.out.println( ( dur / 1000000000.0 ) + "\t Q: " + qual );
             total += dur;
@@ -307,13 +308,13 @@ public class MainTest {
         Graphs.assertValid( graph );
         Graphs.randomizePositions3( graph.mVerts, bounds, params.mRand );
         
-        GLCapabilities caps = new GLCapabilities();
+        GLCapabilities caps = new GLCapabilities( GLProfile.get( GLProfile.GL3 ) );
         caps.setNumSamples( 1 );
         caps.setSampleBuffers( false );
         caps.setDepthBits( 16 );
         caps.setDoubleBuffered( true );
         
-        final GRootController cont = GRootController.newInstance( caps, null );
+        final GRootController cont = GRootController.create( caps );
         cont.setClearColor( 0.15f, 0.15f, 0.15f, 1f );
         cont.setClearBits( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
         cont.rootPane().addChild( new GraphPanel( params, graph, lineAlpha ) );
@@ -323,7 +324,7 @@ public class MainTest {
                 int w = pane.width();
                 int h = pane.height();
                 for( GComponent c: pane.children() ) {
-                    c.bounds( 0, 0, w, h );
+                    c.setBounds( 0, 0, w, h );
                 }
             }
         });

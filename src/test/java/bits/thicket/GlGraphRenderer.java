@@ -6,60 +6,74 @@
 
 package bits.thicket;
 
+import java.io.IOException;
 import java.nio.*;
-import javax.media.opengl.GL;
 
-import bits.draw3d.nodes.*;
-import bits.glui.*;
-import static javax.media.opengl.GL.*;
+import bits.draw3d.*;
+import bits.util.Resources;
 
+import static com.jogamp.opengl.GL2ES3.*;
 
 
 /**
  * @author decamp
  */
 public class GlGraphRenderer {
-    
-    private final BufferNode mVbo;
-    private final BufferNode mIbo;
-    private final DrawBufferParams mVertParams;
-    private final DrawBufferParams mEdgeParams;
-    private ByteBuffer mIndBuf;
-    
+
+    private final Bo  mVbo;
+    private final Bo  mIbo;
+    private final Vao mVao;
+
+    private final Program mProg;
+    private int mColorUni;
+
     private final int mDim;
-    
+
     private float mLineAlpha;
-    private Graph mGraph = null;
-    private boolean mInit = true;
-    private int mVertCount = 0;
-    private int mEdgeCount = 0;
-    
-    
+    private Graph   mGraph     = null;
+    private boolean mInit      = true;
+    private int     mVertCount = 0;
+    private int     mEdgeCount = 0;
+
+
     public GlGraphRenderer( int dim, float lineAlpha ) {
         mDim = dim;
         mLineAlpha = lineAlpha;
-        
-        mVbo = BufferNode.newVertexInstance( GL_STREAM_DRAW );
-        mIbo = BufferNode.newElementInstance( GL_DYNAMIC_DRAW );
-        mVertParams = DrawBufferParams.newInstance();
-        mEdgeParams = DrawBufferParams.newInstance();
-        
-        mVertParams.enableVertexPointer( dim, GL_FLOAT, 4*dim, 0 );
-        mEdgeParams.enableIndices( GL_UNSIGNED_INT );
-        mEdgeParams.enableVertexPointer( dim, GL_FLOAT, 4*dim, 0 );
-    }
-    
 
-    
+        mVbo = Bo.createArrayBuffer( GL_STREAM_DRAW );
+        mIbo = Bo.createElementBuffer( GL_DYNAMIC_DRAW );
+        mVao = new Vao( mVbo, mIbo );
+        mVao.addAttribute( 0, dim, GL_FLOAT, false );
+        mVao.packFormat();
+
+        try {
+            mProg = new AutoloadProgram();
+            mProg.addShader(
+                    new Shader(
+                            GL_VERTEX_SHADER,
+                            Resources.readString( "bits/thicket/Pos.vert" )
+                    )
+            );
+            mProg.addShader(
+                    new Shader(
+                            GL_FRAGMENT_SHADER,
+                            Resources.readString( "bits/thicket/PosuniColor.frag" )
+                    )
+            );
+
+        } catch( IOException e ) {
+            throw new RuntimeException( "Unable to load shaders", e );
+        }
+    }
+
+
     public void init( Graph graph ) {
         mGraph = graph;
         mInit  = true;
     }
     
         
-    public void render( GGraphics g ) {
-        GL gl = g.gl();
-        
+    public void render( DrawEnv d ) {
         if( mGraph == null ) {
             return;
         }
@@ -82,22 +96,25 @@ public class GlGraphRenderer {
                 mIbo.alloc( edgeCount * 4 * mDim );
             }
             
-            mIbo.pushDraw( gl );
-            ByteBuffer buf = mIbo.map( gl, GL_WRITE_ONLY );
+            mIbo.pushDraw( d );
+            ByteBuffer buf = mIbo.map( d, GL_WRITE_ONLY );
             for( Edge e = mGraph.mEdges; e != null; e = e.mGraphNext ) {
                 buf.putInt( (int)( e.mA.mTempDist + 0.5f ) );
                 buf.putInt( (int)( e.mB.mTempDist + 0.5f ) );
             }
             
-            mIbo.unmap( gl );
-            mIbo.popDraw( gl );
-            
+            mIbo.unmap( d );
+            mIbo.popDraw( d );
             //System.out.println( "Loaded Verts: " + mVertCount + "  Edges: " + mEdgeCount );
+
+            mProg.bind( d );
+            mColorUni = d.mGl.glGetUniformLocation( mProg.id(), "COLOR" );
+            mProg.unbind( d );
         }
-        
+
         // Write points to draw buffer.
-        mVbo.pushDraw( gl );
-        ByteBuffer buf = mVbo.map( gl, GL_WRITE_ONLY );
+        mVbo.bind( d );
+        ByteBuffer buf = mVbo.map( d, GL_WRITE_ONLY );
         
         switch( mDim ) {
         case 2:
@@ -115,28 +132,27 @@ public class GlGraphRenderer {
             }
             break;
         }
-        
-        mVbo.unmap( gl );
-        
+
+        mVbo.unmap( d );
+        mVbo.unbind( d );
+
         // Execute line commands
         float lineAlpha = mLineAlpha * (float)( 1.0 / Math.max( 1.0, Math.min( 200.0, Math.log( mEdgeCount ) / Math.log( 3.0 ) ) ) ); 
-        
-        gl.glLineWidth( 1f );
-        gl.glColor4f( 1f, 1f, 1f, lineAlpha );
-        mIbo.pushDraw( gl );
-        mEdgeParams.push( gl );
-        mEdgeParams.execute( gl, GL_LINES, 0, mEdgeCount * 2 );
-        mEdgeParams.pop( gl );
-        mIbo.popDraw( gl );
-        
+        d.mLineWidth.apply( 1f );
+
+        mVao.bind( d );
+        mProg.bind( d );
+
+        d.mGl.glUniform4f( mColorUni, 1f, 1f, 1f, lineAlpha );
+        d.mGl.glDrawElements( GL_LINES, mEdgeCount * 2, GL_UNSIGNED_INT, 0 );
+
         // Execute node geometry.
-        gl.glPointSize( 4f );
-        gl.glColor4f( 0.8f, 0f, 0f, 0.7f );
-        mVertParams.push( gl );
-        mVertParams.execute( gl, GL_POINTS, 0, mVertCount );
-        mVertParams.pop( gl );
-        
-        mVbo.popDraw( gl );
+        d.mGl.glPointSize( 4f );
+        d.mGl.glUniform4f( mColorUni, 0.8f, 0f, 0f, 0.7f );
+        d.mGl.glDrawArrays( GL_POINTS, 0, mVertCount );
+
+        mVao.unbind( d );
+
     }
     
 }
