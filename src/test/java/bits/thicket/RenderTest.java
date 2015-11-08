@@ -6,7 +6,7 @@
 
 package bits.thicket;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.io.File;
 import java.util.Random;
 
@@ -85,7 +85,7 @@ public class RenderTest {
     static void testRender() throws Exception {
         final float lineAlpha = 1f;
         int dim = 3;
-        int imSize = 1300;
+        int imSize = 720;
         
         LayoutParams params         = new LayoutParams();
         params.mDim                 = dim;
@@ -113,7 +113,6 @@ public class RenderTest {
 //        Graph graph = ColParser.parse( new File( "../test/resources/dsjr500.5.col" ), dim );
         Graph graph = GraphFileParser.parse( new File( "../test/resources/4elt.graph" ) );
 //        Graph graph = WattsStrogatzGenerator.generate( params.mRand, dim, 10000, 20, 0.002 );
-//        Graph graph = new Graph( WattsStrogatzGenerator.generate( null, dim, 200, 15, 0.05 ) );
 
         System.out.println( "Graph Verts: " + graph.mVertNo );
 
@@ -130,7 +129,8 @@ public class RenderTest {
         final GRootController cont = GRootController.create( caps );
         cont.setClearColor( 0.15f, 0.15f, 0.15f, 1f );
         cont.setClearBits( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-        cont.rootPane().addChild( new GraphPanel( params, graph, lineAlpha ) );
+        GraphPanel panel = new GraphPanel( params, graph, lineAlpha );
+        cont.rootPane().addChild( panel );
         cont.rootPane().setLayout( new GLayout() {
             @Override
             public void layoutPane( GComponent pane ) {
@@ -143,11 +143,22 @@ public class RenderTest {
         });
 
         JFrame frame = new JFrame( "Graph Layout" );
+        cont.component().setPreferredSize( new Dimension( imSize * 4 / 3, imSize ) );
         frame.add( cont.component(), BorderLayout.CENTER );
-        frame.setSize( imSize, imSize + 22 );
+        frame.pack();
         frame.setLocationRelativeTo( null );
         frame.setVisible( true );
-        
+
+        if( false ) {
+            panel.exporter().addVideoWriter(
+                    new File( "/tmp/thicket_4elt_multilevel.mp4" ),
+                    20,
+                    -1,
+                    0,
+                    Long.MAX_VALUE
+            );
+        }
+
         cont.startAnimator( 30.0 );
     }
 
